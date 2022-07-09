@@ -1,5 +1,7 @@
 from django.shortcuts import render,redirect
 from shortener.models import Users
+from django.http.response import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 def index(request) :
@@ -20,10 +22,22 @@ def index(request) :
     return render(request,"base.html",{"welcome_msg" : f"Hello {email}!"})
 
 
-def redirect_test(request):
-    print("Go Redirect")
-    #여기로 들어오면 index로 redirect하라 
-    return redirect("index")
+@csrf_exempt
+def get_user(request, user_id):
+    print(user_id)
+    if request.method == "GET":
+        #쿼리셋 형태로 받은 abc에 들어있는 값과 xyz에 들어있는 값을 리턴한다.
+        # eX) http://127.0.0.1:8000/get_user/1?abc=123&xyz=안녕
+        abc = request.GET.get("abc")
+        xyz = request.GET.get("xyz")
+        user = Users.objects.filter(pk=user_id).first()
+        #리스트 형태로 데이터를 넘겨주면 Django HTML에서 for문으로 출력 가능 
+        return render(request, "base.html", {"user": user, "params": [abc, xyz]})
+    elif request.method == "POST":
+        username = request.GET.get("username")
+        #username을 방금 요청받은 이름으로 변경한다. 
+        if username:
+            user = Users.objects.filter(pk=user_id).update(username=username)
 
-
+        return JsonResponse(dict(msg="You just reached with Post Method!"))
 

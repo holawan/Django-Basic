@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FastCampus Django</title>
+  <title> Django</title>
 </head>
 <body>
-  {{ welcome_msg }}
+    {{ user }} <br>
+    {% for i in params %}
+    {{i}}<br>
+    {% endfor %}
+    {{user.username}}
+    {{user.email}}
+    {% if user == admin %}
+    <p>true</p>
+    {% else %}
+    <p>false</p>
+    {% endif %}
+    <p>gg</p>
 </body>
 </html>

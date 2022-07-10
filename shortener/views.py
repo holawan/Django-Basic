@@ -4,7 +4,8 @@ from shortener.models import Users
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate,logout
+from django.contrib.auth.forms import AuthenticationForm
 
 def index(request) :
     #user중 이름이 admin인 것을 필터해서 그중 첫번째 것을 가져와라
@@ -60,3 +61,28 @@ def register(request) :
     else :
         form = RegisterForm()
     return render(request, "register.html",{"form" : form})
+
+
+    
+
+def login_view(request):
+    if request.method == "POST":
+        form = AuthenticationForm(request, request.POST)
+        msg = "가입되어 있지 않거나 로그인 정보가 잘못 되었습니다."
+        print(form.is_valid)
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=raw_password)
+            if user is not None:
+                msg = "로그인 성공"
+                login(request, user)
+        return render(request, "login.html", {"form": form, "msg": msg})
+    else:
+        form = AuthenticationForm()
+        return render(request, "login.html", {"form": form})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("index")

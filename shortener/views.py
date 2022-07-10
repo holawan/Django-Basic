@@ -9,7 +9,7 @@ def index(request) :
     #없으면 none'
     # print(request.user.pay_plan)
     user = Users.objects.filter(id=request.user.id).first()
-
+    print(request.user.pay_plan.name)
     # user = Users.objects.get(username='admin')
     #email이 있으면 email에 email을 입력하고 아니면 anonymous User로 선언해라 
     email = user.email if user else "Anonymous User!"

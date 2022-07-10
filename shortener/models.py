@@ -16,6 +16,6 @@ class Users(AbstractUser) :
     pay_plan = models.ForeignKey(PayPlan, on_delete=models.DO_NOTHING,null=True)
 
 #장고 내부 USER 모델에과 onetoeone 관계만들어서 detail 관리하기 
-class UserDetail(models.Model) :
-    user = models.OneToOneField(Users, on_delete=models.CASCADE)
-    pay_plan = models.ForeignKey(PayPlan,on_delete=models.DO_NOTHING)
+# class UserDetail(models.Model) :
+#     user = models.OneToOneField(Users, on_delete=models.CASCADE)
+#     pay_plan = models.ForeignKey(PayPlan,on_delete=models.DO_NOTHING)

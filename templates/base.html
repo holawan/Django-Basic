@@ -4,18 +4,10 @@
   <meta charset="UTF-8">
   <title> Django</title>
 </head>
-<body>
-    {{ user }} <br>
-    {% for i in params %}
-    {{i}}<br>
+  <body>
+    {{ user }} <br />
+    {% for i in params %} {{i}}<br />
     {% endfor %}
-    {{user.username}}
-    {{user.email}}
-    {% if user == admin %}
-    <p>true</p>
-    {% else %}
-    <p>false</p>
-    {% endif %}
-    <p>gg</p>
-</body>
+    <a href="{% url 'register' %}">회원가입</a>
+  </body>
 </html>

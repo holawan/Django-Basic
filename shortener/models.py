@@ -13,6 +13,7 @@ class PayPlan(models.Model) :
 
 #AbstractUser 상속받기 
 class Users(AbstractUser) :
+    full_name = models.CharField(max_length=100,null=True)
     pay_plan = models.ForeignKey(PayPlan, on_delete=models.DO_NOTHING,null=True)
 
 #장고 내부 USER 모델에과 onetoeone 관계만들어서 detail 관리하기 

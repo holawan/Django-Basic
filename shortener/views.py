@@ -1,15 +1,17 @@
 from django.shortcuts import render,redirect
+from shortener.forms import RegisterForm
 from shortener.models import Users
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
+from django.contrib.auth import login, authenticate
 
 def index(request) :
     #user중 이름이 admin인 것을 필터해서 그중 첫번째 것을 가져와라
     #없으면 none'
     # print(request.user.pay_plan)
     user = Users.objects.filter(id=request.user.id).first()
-    print(request.user.pay_plan.name)
+    # print(request.user.pay_plan.name)
     # user = Users.objects.get(username='admin')
     #email이 있으면 email에 email을 입력하고 아니면 anonymous User로 선언해라 
     email = user.email if user else "Anonymous User!"
@@ -41,3 +43,20 @@ def get_user(request, user_id):
 
         return JsonResponse(dict(msg="You just reached with Post Method!"))
 
+def register(request) :
+
+    if request.method=='POST' :
+        form = RegisterForm(request.POST) 
+        msg = "올바르지 않은 데이터입니다."
+
+        if form.is_valid() :
+            form.save()
+            username= form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get("password1")
+            user = authenticate(username=username,password=raw_password)
+            login(request,user)
+            msg="회원가입 완료"
+        return render(request,"register.html",{"form":form,"msg":msg})
+    else :
+        form = RegisterForm()
+    return render(request, "register.html",{"form" : form})
